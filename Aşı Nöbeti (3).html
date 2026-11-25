@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aşı Nöbeti</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#eef4f1;--card:#fff;--ink:#10252b;--mut:#5b7076;--tl:#0f766e;--tl2:#d5ede9;--ok:#15803d;--okb:#dcf3e3;--bad:#c2410c;--badb:#fde4d8;--ln:#cfdcd8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1a1d;--card:#13282c;--ink:#e8f2ef;--mut:#93aaa8;--tl:#4fd1c0;--tl2:#17413e;--ok:#6ee79a;--okb:#143a24;--bad:#ff9a6b;--badb:#47220f;--ln:#25403f}}
+:root[data-theme="dark"]{--bg:#0c1a1d;--card:#13282c;--ink:#e8f2ef;--mut:#93aaa8;--tl:#4fd1c0;--tl2:#17413e;--ok:#6ee79a;--okb:#143a24;--bad:#ff9a6b;--badb:#47220f;--ln:#25403f}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+#app{max-width:480px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:34px;line-height:1.05;margin:8px 0 6px;font-weight:800;letter-spacing:-.02em}
+h2{font-size:22px;line-height:1.2;margin:0 0 14px;font-weight:700}
+p{margin:0 0 12px}.mut{color:var(--mut);font-size:14px}
+.lv{display:flex;gap:14px;align-items:center;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--ln);border-radius:16px;padding:14px;margin-bottom:10px;color:inherit;font:inherit;cursor:pointer}
+.lv:focus-visible,.o:focus-visible,.go:focus-visible{outline:3px solid var(--tl);outline-offset:2px}
+.lv .e{font-size:28px;width:48px;height:48px;border-radius:12px;background:var(--tl2);display:grid;place-items:center;flex:none}
+.lv b{display:block;font-size:17px}.lv.done{border-color:var(--ok)}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-weight:700}
+.bar{height:8px;background:var(--ln);border-radius:9px;overflow:hidden;margin-bottom:18px}.bar i{display:block;height:100%;background:var(--tl);transition:width .3s}
+.o{display:block;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--ln);border-radius:14px;padding:14px;margin-bottom:10px;color:inherit;font:inherit;font-weight:500;cursor:pointer;min-height:52px}
+.o.ok{background:var(--okb);border-color:var(--ok)}.o.no{background:var(--badb);border-color:var(--bad)}
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tf .o{text-align:center;font-weight:700}
+.ex{border-left:5px solid var(--tl);background:var(--card);border-radius:10px;padding:12px 14px;margin:6px 0 14px;font-size:15px}
+.go{display:block;width:100%;background:var(--tl);color:var(--bg);border:0;border-radius:14px;padding:15px;font:inherit;font-weight:800;font-size:17px;cursor:pointer}
+.sec{background:var(--card);border:1.5px solid var(--ln);border-radius:14px;padding:10px 14px;margin-bottom:8px;min-height:46px}
+.sec span{color:var(--tl);font-weight:800;margin-right:8px}
+.shake{animation:sh .3s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.shake{animation:none}.bar i{transition:none}}
+.big{font-size:56px;text-align:center;margin:10px 0}.note{font-size:12.5px;color:var(--mut);margin-top:22px}
+body{background-image:radial-gradient(var(--ln) 1px,transparent 1px);background-size:22px 22px}
+.hero{width:100%;height:auto;display:block;margin:0 0 14px;border-radius:22px}
+.i1{fill:var(--card);stroke:var(--tl);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.i2{fill:none;stroke:var(--tl);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.i3{fill:none;stroke:#e4572e;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.i4{fill:#e4572e}.i5{fill:var(--tl)}
+.tt{display:flex;align-items:center;gap:10px}.ti{display:grid;place-items:center;background:var(--tl2);border-radius:12px;padding:4px}
+.lv .e{width:54px;height:54px}
+.body{display:block;max-width:230px;width:100%;margin:0 auto 14px}
+g.hs{cursor:pointer}g.hs circle{fill:var(--tl);opacity:.92;stroke:var(--card);stroke-width:3}g.hs.ok circle{fill:var(--ok)}g.hs.no circle{fill:var(--bad)}
+g.hs text{fill:var(--bg);font:800 15px system-ui,sans-serif;text-anchor:middle;pointer-events:none}
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.lg .o{margin:0;padding:10px;font-size:14px;min-height:48px}.lg b{color:var(--tl);margin-right:6px}
+.sec.me{border-color:var(--tl);background:var(--tl2)}.nick{display:flex;margin:0 0 10px}
+.gh{font-size:14px;margin:20px 0 10px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-weight:700}.nick input{flex:1;min-width:0;padding:13px;border-radius:12px;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);font:inherit}
+.mg{display:grid;gap:8px;margin-bottom:12px}.mc{min-height:76px;border-radius:14px;border:1.5px solid var(--ln);background:var(--tl2);color:var(--ink);font:600 13px/1.2 "Bricolage Grotesque",system-ui,sans-serif;padding:6px;cursor:pointer;display:grid;place-items:center;word-break:break-word;text-align:center}.mc svg{width:30px;height:30px}.mc.up{background:var(--card);border-color:var(--tl)}.mc.ok{background:var(--okb);border-color:var(--ok)}.mg.w .mc{font-size:15px;min-height:62px}
+.mc.pv{min-height:118px;font-size:12px;gap:3px;padding:6px 3px}.mc.pv svg{width:56px;height:70px}.mc.pv.vl{min-height:104px}.mc.pv.vl svg{width:38px;height:52px}.mc.sel{border-color:var(--tl);box-shadow:0 0 0 3px var(--tl2);background:var(--card)}
+.sq{display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--ln);margin-right:3px}.sq.ok{background:var(--ok)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var SR="‘Hemşirelikte Öğretim’ sunumu: ";
+var L=[
+{t:"Aşı nedir?",d:"Nasıl etki eder?",e:"🧠",k:"tf",r:SR+"Aşı nedir, nasıl etki eder?",q:[
+["Aşılar, mikropların hastalık yapma özellikleri giderilerek veya toksinlerinin etkisi ortadan kaldırılarak geliştirilir.",true,"Aşılar, hastalık yapıcı özellikleri giderilmiş mikroplardan ya da etkisizleştirilmiş toksinlerden geliştirilen biyolojik ürünlerdir."],
+["Aşılar yalnızca hasta kişilere tedavi amacıyla uygulanır.",false,"Aşılar hastalıklardan korumak için sağlam ve risk altındaki kişilere uygulanır."],
+["Vücut, aşıdaki zararsız mikrobu veya toksini tanır ve ona karşı savunma geliştirir.",true,"Gerçek mikropla karşılaşıldığında önceden gelişmiş savunma devreye girer ve kişi hastalığa yakalanmaz."],
+["Aşı sonrası oluşan bağışıklık hiçbir zaman uzun süre kalmaz.",false,"Oluşan bağışıklık genellikle uzun süre, çoğu zaman ömür boyu kalır. Bazı aşılarda pekiştirme (rapel) dozu gerekir."]]},
+{t:"Aşı türleri",d:"Canlı, ölü, toksoid...",e:"🧰",k:"ch",r:SR+"Aşı türleri",q:[
+["Hangisi canlı (zayıflatılmış) aşıdır?",["Difteri","BCG","Hepatit B","Hepatit A"],1,"Canlı aşılar: BCG, OPA, KKK ve suçiçeği."],
+["Canlı aşılar hangi kişilere uygulanmamalıdır?",["Çocuklara","Bağışıklığı zayıflamış veya baskılanmış kişilere","Erişkinlere","Sağlıklı kişilere"],1,"Canlı aşılar, bağışıklık sistemi zayıflamış ya da baskılanmış kişilere uygulanmamalıdır."],
+["Hepatit A, inaktive polio ve kuduz aşıları hangi türdedir?",["Canlı aşı","Tam hücre (ölü) aşı","Toksoid aşı","Rekombinant aşı"],1,"Fiziksel veya kimyasal işlemle öldürülmüş bakteri ya da virüs içeren tam hücre aşılarıdır."],
+["Difteri ve tetanos aşıları hangi türdedir?",["Toksoid aşı","Canlı aşı","Rekombinant aşı","Alt birimli aşı"],0,"Toksoid aşılarda toksinin zararlı özelliği giderilmiş, bağışıklık oluşturan yapısı korunmuştur."],
+["Hepatit B aşısı hangi yöntemle üretilir?",["Zayıflatma","Rekombinant DNA teknolojisi","Isıyla öldürme","Toksin değiştirme"],1,"Hepatit B aşısı rekombinant DNA teknolojisiyle üretilen aşılara örnektir."],
+["Pnömokok, Hib, aselüler boğmaca ve meningokok aşıları hangi türdedir?",["Alt birimli aşı","Canlı aşı","Toksoid aşı","Rekombinant aşı"],0,"Alt birimli aşılar mikroorganizmanın tümünü değil, yalnızca belli antijenik kısımlarını içerir."]]},
+{t:"Aşının önemi",d:"Toplum ve 13 hastalık",e:"🛡️",k:"ch",r:SR+"Aşının önemi; Çocukluk çağı aşıları; Aşı takvimi",q:[
+["Aşılar, hastalıkların kişiler arası yayılımını önleyerek kimi korur?",["Yalnızca aşılananı","Yalnızca çocukları","Tüm toplumu","Yalnızca sağlık çalışanlarını"],2,"Aşılar yayılımı önleyerek sadece çocukları değil tüm toplumu korur."],
+["Ülkemizin çocukluk dönemi takviminde kaç hastalığa karşı rutin aşı uygulanır?",["7","10","13","20"],2,"Sunuma göre 13 hastalık: difteri, boğmaca, tetanos, çocuk felci, hepatit B, hepatit A, Hib, tüberküloz, kızamık, kabakulak, kızamıkçık, suçiçeği ve pnömokok."],
+["Hangisi rutin çocukluk takvimindeki hastalıklardan biri DEĞİLDİR?",["Tüberküloz","Suçiçeği","Kuduz","Çocuk felci"],2,"Kuduz aşısı rutin çocukluk takviminde yer almaz."],
+["Çocukluk çağı aşıları bağışıklık sisteminde neyi sağlar?",["Antikor ve hafıza hücrelerinin üretimini","Mikropların doğrudan öldürülmesini","Bağışıklığın baskılanmasını","Yalnızca ateşin düşmesini"],0,"Aşılar, uzun süreli koruma sağlayan antikor ve hafıza hücrelerinin üretimini tetikler."]]},
+{t:"Aşı takvimi 2026",d:"Hangi aşı ne zaman?",e:"📅",k:"ch",r:SR+"Ulusal Çocukluk Dönemi Aşılama Takvimi (1 Eylül 2026 itibarıyla güncel)",q:[
+["Hepatit B aşısının ilk dozu takvimde ne zaman yapılır?",["Doğumda","2. ay sonu","6. ay sonu","12. ay sonu"],0,"Hep-B 1. doz doğumda yapılır. 2., 4. ve 6. aylardaki karma aşı da hepatit B içerir."],
+["KPA (konjuge pnömokok) aşısı hangi aylarda yapılır?",["2. ve 4. ay, 12. ayda rapel","6. ve 18. ay","12. ve 24. ay","Doğum ve 9. ay"],0,"KPA: 2. ay (I), 4. ay (II), 12. ay (rapel)."],
+["DaBT-İPA-Hib-HepB karma aşısının dozları hangi aylardadır?",["2., 4., 6. ay ve 18. ay rapel","2., 6. ve 12. ay","Doğum, 1. ay, 6. ay","12., 18. ve 24. ay"],0,"I: 2. ay, II: 4. ay, III: 6. ay, rapel: 18. ay."],
+["OPA (oral polio) dozları hangi aylardadır?",["6. ve 18. ay","2. ve 4. ay","12. ve 24. ay","Doğum ve 2. ay"],0,"OPA I: 6. ay sonu, OPA II: 18. ay sonu."],
+["KKK aşısı için 9. ayda yapılan doz hangisidir?",["Ek doz","1. doz","2. doz","Rapel"],0,"KKK: 9. ay ek doz, 12. ay 1. doz, 48. ay 2. doz."],
+["Suçiçeği aşısının iki dozu hangi zamanlardadır?",["12. ay ve 48. ay","2. ay ve 4. ay","18. ay ve 24. ay","Doğum ve 13 yaş"],0,"Suçiçeği: 12. ay sonu 1. doz, 48. ay 2. doz."],
+["13 yaşında hangi aşı yapılır?",["Td (erişkin tipi tetanos-difteri) rapel","BCG","Hepatit A","OPA"],0,"13 yaşta Td rapel dozu uygulanır."]]},
+{t:"Takvim sırası",d:"Yaşa göre sırala",e:"📋",k:"ord",s:["Hepatit B (1. doz)","BCG","OPA (1. doz)","KKK (ek doz)","Suçiçeği (1. doz)","Hepatit A (2. doz)","DaBT-İPA (rapel)","Td (rapel)"]},
+{t:"Erişkin aşıları",d:"Gebe, 65+, risk grupları",e:"📜",k:"ch",r:SR+"Erişkin dönemi aşı uygulamaları (T.C. Sağlık Bakanlığı tablosu)",q:[
+["Sağlıklı erişkinlere önerilen aşı hangisidir?",["Td","BCG","OPA","Suçiçeği"],0,"Sağlıklı erişkinlere erişkin tipi tetanos-difteri (Td) aşısı önerilir."],
+["Gebelere hangi aşılar önerilir?",["Tdab, Td ve grip","BCG ve OPA","KKK ve suçiçeği","Yalnızca hepatit A"],0,"Gebelere Tdab, Td ve grip aşısı önerilir. KKK ve suçiçeği canlı aşıdır, gebelikte genellikle yapılmaz."],
+["65 yaş ve üzerine hangi aşılar önerilir?",["Pnömokok ve grip","BCG ve Td","KKK ve OPA","Yalnızca hepatit B"],0,"65 yaş ve üzerinde pnömokok ve grip aşısı önerilir."],
+["Hangisi risk grubundaki erişkinlere önerilen aşılardan biri DEĞİLDİR?",["Hepatit B","Meningokok","BCG","Pnömokok"],2,"Risk gruplarına hepatit B, hepatit A, pnömokok, grip, meningokok, suçiçeği ve KKK önerilir; BCG bu listede yoktur."]]},
+{t:"Doğru mu, yanlış mı? Yanlış bilinenler",d:"Mit kırma",e:"🧠",k:"tf",r:SR+"Aşılarla ilgili yanlış bilinenler; Ebeveynlerin rolü",q:[
+["Tehdit altında olmadığımız hastalıklara karşı aşı olmaya gerek yoktur.",false,"Seyahatlerin sıklaştığı dünyada başka ülkelerde görülen hastalıklar için de risk altındayız. Difteri ve menenjit örnektir."],
+["Aşıların yan etkileri çok tehlikelidir.",false,"Aşıların yan etkilerinin şiddeti ve sıklığı, hastalığın kendisinde görülecek sonuçlara kıyasla çok hafiftir."],
+["Aynı anda birden fazla aşı yapmak bağışıklık sistemine zarar verir.",false,"Günlük hayatta maruz kalınan antijenlere göre aşılardaki antijen sayısı çok düşüktür. Birlikte uygulama takvime uyumu da artırır."],
+["En sağlam bağışıklık hastalığı geçirerek kazanılır, bu yüzden aşı gereksizdir.",false,"Aşılar ağır, hatta ölümcül seyredebilen hastalıklara karşı üretilir. Kızamıkta ensefalit riski yaklaşık 1/1000, aşıda yaklaşık 1/1.000.000’dur."],
+["Aşılar kısırlık yapar.",false,"Bu iddiayı destekleyen bilimsel bulgu yoktur. HPV aşısındaki polisorbat 80 için ileri sürülen iddia da kanıtlanmamıştır."],
+["Çocuğunu aşılatan ebeveyn, aşı olamayacak kadar bağışıklığı zayıf çocukları da dolaylı korur.",true,"Bu etkiye toplum (sürü) bağışıklığı denir; yüksek aşılanma oranı salgınlara karşı koruyucudur."]]},
+{t:"Aşı sonrası etkiler",d:"Beklenen yan etkiler",e:"🩹",k:"ch",r:SR+"Aşı sonrası istenmeyen etkiler",q:[
+["Enjeksiyon yerinde ağrı, şişlik ve kızarıklık genellikle ne kadar sürede kendiliğinden düzelir?",["24–48 saat","2 hafta","1 ay","6 ay"],0,"Genellikle 24–48 saatte düzelir. Soğuk uygulama ve ağrı kesici şikâyetleri rahatlatabilir."],
+["Enjeksiyon yeri reaksiyonu hangi aşının tekrarlayan dozlarında daha sık görülür?",["Tetanos","BCG","OPA","Hepatit A"],0,"Özellikle tetanos aşısının tekrarlayan dozlarında bu reaksiyon daha sık gözlenir."],
+["BCG sonrası 2–3 hafta içinde başlayan sivilce benzeri şişlik nasıl değerlendirilir?",["Beklenen bir durumdur","Aşı hatasıdır","Aşı yapılmadığını gösterir","Hemen müdahale gerektirir"],0,"Aşı sonrası %90–95 sıklıkla beklenir ve 2–5 ay içinde ciltte iz bırakarak iyileşir."],
+["KKK aşısından sonra döküntü genellikle ne zaman başlar?",["7–10. günlerde","İlk saatte","1 ay sonra","6 ay sonra"],0,"%2–5 oranında, genellikle 7–10. günlerde başlar ve yaklaşık 2 gün sürer."],
+["Hepatit A aşısından sonra ishal ve kusma ne sıklıkla görülür?",["%5’ten az","%50","%90","Hiç görülmez"],0,"%5’ten az sıklıkla görülür; genellikle 48 saatten kısa sürede düzelir."],
+["Ateş, baş ağrısı ve kas ağrısı gibi sistemik belirtiler genellikle ne kadar sürede düzelir?",["48–72 saat","1 hafta","1 ay","Düzelmez"],0,"Sunuma göre 48–72 saat içinde kendiliğinden düzelir. Ağır ya da uzayan belirtilerde sağlık kuruluşuna başvurulmalıdır."]]},
+{t:"Farkındalık ve ebeveyn",d:"İletişim ve yöntemler",e:"🎯",k:"ch",r:SR+"Ebeveynlerin aşılamadaki rolü; Aşı farkındalığını arttırma yöntemleri",q:[
+["Motivasyonel görüşme tekniği aşı tereddüdü yaşayan kişiye nasıl yaklaşmayı önerir?",["İkna etmeye zorlamak","Aktif dinleyip endişenin kaynağını sormak","Eleştirmek","Konuyu geçiştirmek"],1,"İkna etmeye çalışmak veya eleştirmek yerine aktif dinleme, endişenin kaynağını sorma ve empati kurma önerilir."],
+["Ebeveynler aşılarla ilgili sorularında hangi kaynağa başvurmalıdır?",["Sosyal medya","Aile hekimi veya çocuk doktoru","Komşular","Reklamlar"],1,"Sosyal medyadaki dezenformasyon yerine sağlık profesyonellerine danışılmalıdır."],
+["Aşı konusunda toplumun en çok güvendiği kişiler sunuma göre kimlerdir?",["Doktorlar, hemşireler ve ebeler","Sosyal medya fenomenleri","Reklam yüzleri","Siyasetçiler"],0,"Sağlık çalışanlarının güncel verilerle donatılması ve iletişim becerilerinin desteklenmesi kritik önem taşır."],
+["Aşı takvimi yaklaşan kişilere hangi dijital yolla hatırlatma yapılabilir?",["E-Nabız veya SMS","Yalnızca mektup","Hiçbiri","Yalnızca televizyon"],0,"E-Nabız veya SMS sistemleriyle otomatik bilgilendirme mesajları gönderilebilir."],
+["Her aşıdan sonra ebeveynin işlendiğini kontrol etmesi gereken belge hangisidir?",["Aşı kartı","Reçete","Sağlık raporu","Sigorta kartı"],0,"Her aşı sonrası aşı kartının işlenmesi takip edilmeli ve randevular aksatılmamalıdır."],
+["Mobil aşı ekipleri kimlere hizmet götürür?",["Sağlık kuruluşuna ulaşmakta zorlanan kırsal, yaşlı ve dezavantajlı gruplara","Yalnızca büyük şehirlere","Yalnızca sağlık çalışanlarına","Yalnızca üniversite öğrencilerine"],0,"Mobil ekipler, erişimi zor kişilere yerinde aşı hizmeti götürür."]]}
+];
+var done={},xp=0,s=null,A=document.getElementById("app");
+var NP=9;
+var DB="https://asifarkindaligi-9b11e-default-rtdb.firebaseio.com";
+var nick="",best={};
+try{nick=localStorage.getItem("nick")||"";best=JSON.parse(localStorage.getItem("best")||"{}")}catch(e){}
+function setNick(v){nick=v.replace(/[^A-Za-z0-9ÇĞİÖŞÜçğıöşü _-]/g,"").slice(0,16);try{localStorage.setItem("nick",nick)}catch(e){}}
+function saveBest(){try{localStorage.setItem("best",JSON.stringify(best))}catch(e){}}
+function total(){var t=0;for(var k in best)t+=best[k];return t}
+function esc(x){return String(x).replace(/[&<>"']/g,function(c){return "&#"+c.charCodeAt(0)+";"})}
+function dbu(){return DB+"/scores/"+encodeURIComponent(nick.trim().replace(/ /g,"_"))+".json"}
+function push(){if(!DB||!nick.trim())return;var u=dbu(),n=nick.trim(),sc=total();fetch(u).then(function(r){return r.json()}).then(function(o){if(!o||o.score<sc||!o.prog)return fetch(u,{method:"PUT",body:JSON.stringify({name:n,score:sc,t:Date.now(),prog:best})}).then(function(r){if(!r.ok)return fetch(u,{method:"PUT",body:JSON.stringify({name:n,score:sc,t:Date.now()})})})}).catch(function(){})}
+function lb(){var h="<div class='top'><span>🏆 Sınıf sıralaması</span></div>";
+if(!DB){A.innerHTML=h+"<p class='mut'>Sıralama henüz bağlanmadı. Yönetici veritabanı adresini ekleyince burada görünür.</p><button class='go' onclick='home()'>Geri</button>";return}
+A.innerHTML=h+"<p class='mut'>Yükleniyor…</p>";
+fetch(DB+"/scores.json").then(function(r){return r.json()}).then(function(o){var a=[];for(var k in o)a.push(o[k]);a.sort(function(x,y){return y.score-x.score});
+var t=h+(a.length?"":"<p class='mut'>Henüz skor yok. İlk sen ol.</p>");a.slice(0,30).forEach(function(p,i){t+="<div class='sec"+(p.name==nick.trim()?" me":"")+"'><span>"+(i+1)+"</span>"+RK[rank(Number(p.score))][2]+" "+esc(p.name)+"<b style='float:right'>"+Number(p.score)+" XP</b></div>"});
+A.innerHTML=t+"<div style='height:8px'></div><button class='go' onclick='home()'>Geri</button>"}).catch(function(){A.innerHTML=h+"<p class='mut'>Bağlanılamadı. İnternetini kontrol et.</p><button class='go' onclick='home()'>Geri</button>"})}
+function sv(b){return "<svg viewBox='0 0 48 48' width='36' height='36' aria-hidden='true'>"+b+"</svg>"}
+var IC={"📅":sv("<rect class='i1' x='6' y='10' width='36' height='32' rx='6'/><path class='i2' d='M6 20h36M16 6v8M32 6v8'/><path class='i3' d='M16 31l5 5 11-11'/>"),
+"🩹":sv("<g transform='rotate(-35 24 24)'><rect class='i1' x='4' y='16' width='40' height='16' rx='8'/><rect class='i2' x='17' y='16' width='14' height='16'/><path class='i3' d='M22 24h.1M26 24h.1'/></g>"),
+"📜":sv("<rect class='i1' x='10' y='6' width='28' height='36' rx='4'/><path class='i2' d='M16 16h16M16 23h16M16 30h8'/><circle class='i4' cx='33' cy='34' r='4'/>"),
+"🧠":sv("<path class='i1' d='M8 10h32a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H22l-8 8v-8H8a2 2 0 0 1-2-2V12a2 2 0 0 1 2-2z'/><path class='i3' d='M19 18c0-4 10-4 10 0 0 3-5 3-5 7M24 29h.1'/>"),
+"💉":sv("<g transform='rotate(45 24 24)'><rect class='i1' x='17' y='9' width='14' height='22' rx='3'/><path class='i2' d='M24 31v9M19 9h10M24 9V4'/><rect class='i5' x='21' y='16' width='6' height='10'/></g>"),
+"📋":sv("<rect class='i1' x='9' y='9' width='30' height='34' rx='4'/><rect class='i1' x='17' y='5' width='14' height='8' rx='3'/><path class='i2' d='M16 22h2M22 22h10M16 30h2M22 30h10'/>"),
+"🛡":sv("<path class='i1' d='M24 5l15 6v11c0 10-7 17-15 21C16 39 9 32 9 22V11z'/><path class='i3' d='M17 24l5 5 9-10'/>"),
+"📏":sv("<g transform='rotate(-30 24 24)'><rect class='i1' x='3' y='16' width='42' height='16' rx='3'/><path class='i2' d='M12 16v6M20 16v8M28 16v6M36 16v8'/></g>"),
+"🧰":sv("<rect class='i1' x='6' y='16' width='36' height='24' rx='4'/><path class='i2' d='M18 16v-4a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v4'/><path class='i3' d='M24 22v12M18 28h12'/>"),
+"🚑":sv("<path class='i1' d='M4 14h26v22H4zM30 20h8l6 7v9H30z'/><circle class='i1' cx='13' cy='38' r='4'/><circle class='i1' cx='36' cy='38' r='4'/><path class='i3' d='M17 19v10M12 24h10'/>")};
+function ico(e){return IC[e.replace(/\uFE0F/g,"")]||e}
+IC["🎯"]=sv("<circle class='i1' cx='24' cy='24' r='18'/><circle class='i2' cx='24' cy='24' r='9'/><circle class='i4' cx='24' cy='24' r='3'/>");
+var HS=[["delt","A","Deltoid (üst kol)",54,96],["tri","B","Üst dış triseps (kolun arka-dışı)",168,124],["thigh","C","Anterolateral uyluk",88,244],["glut","D","Kalça (gluteal)",150,200],["abd","E","Karın",110,140]];
+function bodySvg(){var g="";HS.forEach(function(h){g+="<g class='hs' data-id='"+h[0]+"' onclick='pick(this.dataset.id)'><circle cx='"+h[3]+"' cy='"+h[4]+"' r='16'/><text x='"+h[3]+"' y='"+(h[4]+5)+"'>"+h[1]+"</text></g>"});
+return "<svg class='body' viewBox='0 0 220 330' role='img' aria-label='Vücut şeması'><g fill='var(--tl2)' stroke='var(--tl)' stroke-width='3' stroke-linejoin='round'><circle cx='110' cy='40' r='24'/><rect x='99' y='62' width='22' height='14' rx='5'/><rect x='70' y='72' width='80' height='122' rx='26'/><rect x='38' y='76' width='26' height='112' rx='13'/><rect x='156' y='76' width='26' height='112' rx='13'/><rect x='72' y='190' width='34' height='128' rx='16'/><rect x='114' y='190' width='34' height='128' rx='16'/></g>"+g+"</svg>"}
+function drawMap(){var q=s.l.q[s.q[s.i]];s.lock=false;var l="";HS.forEach(function(h){l+="<button class='o hs' data-id='"+h[0]+"' onclick='pick(this.dataset.id)'><b>"+h[1]+"</b>"+h[2]+"</button>"});
+A.innerHTML=hdr()+"<h2>"+q[0]+"</h2>"+bodySvg()+"<div class='lg'>"+l+"</div><div id='fb'></div>"}
+function pick(id){if(s.lock)return;s.lock=true;var q=s.l.q[s.q[s.i]],ok=id==q[1],last=s.i==s.l.q.length-1;
+document.querySelectorAll('.hs').forEach(function(n){if(n.dataset.id==q[1])n.classList.add('ok');else if(n.dataset.id==id)n.classList.add('no')});
+if(ok)xp+=10;else s.h--;
+document.getElementById('fb').innerHTML="<div class='ex'><b>"+(ok?"Doğru. ":"Yanlış. ")+"</b>"+q[2]+"<br><span class='mut'>Kaynak: "+s.l.r+"</span></div><button class='go' onclick='nxt()'>"+(s.h==0||last?"Sonucu gör":"Devam")+"</button>"}
+var MEDAL="<svg viewBox='0 0 48 48' width='96' height='96' aria-hidden='true'><path class='i2' d='M16 4l6 14M32 4l-6 14'/><circle class='i1' cx='24' cy='30' r='13'/><path class='i3' d='M18 30l4 4 8-9'/></svg>";
+var HERO="<svg class='hero' viewBox='0 0 320 140' role='img' aria-label='Aşı, kalkan ve şıringa'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#0b5d57'/><stop offset='1' stop-color='#17a398'/></linearGradient></defs><rect width='320' height='140' rx='22' fill='url(#g)'/><circle cx='36' cy='28' r='46' fill='#fff' opacity='.07'/><circle cx='292' cy='120' r='54' fill='#fff' opacity='.07'/><g transform='translate(62 30)'><rect x='0' y='22' width='34' height='62' rx='8' fill='#fff'/><rect x='6' y='6' width='22' height='20' rx='4' fill='#ffd166'/><rect x='5' y='46' width='24' height='26' rx='4' fill='#e4572e' opacity='.9'/><path d='M17 52v14M10 59h14' stroke='#fff' stroke-width='4' stroke-linecap='round'/></g><g transform='translate(120 16)'><path d='M40 0l38 15v28c0 26-17 44-38 54C19 87 2 69 2 43V15z' fill='#fff'/><path d='M40 28v38M21 47h38' stroke='#e4572e' stroke-width='9' stroke-linecap='round'/></g><g transform='translate(212 22) rotate(35 40 50)'><rect x='30' y='20' width='20' height='56' rx='5' fill='#fff'/><rect x='36' y='40' width='8' height='28' fill='#ffd166'/><path d='M40 76v26M22 20h36M40 20V4' stroke='#fff' stroke-width='5' stroke-linecap='round'/></g><circle cx='36' cy='110' r='5' fill='#ffd166'/><circle cx='292' cy='30' r='4' fill='#ffd166'/><circle cx='270' cy='52' r='3' fill='#fff' opacity='.7'/></svg>";
+function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function home(){
+var h=HERO+"<h1>Aşı Nöbeti</h1><p class='mut'>Hemşirelik ve tıp öğrencileri için aşı farkındalığı ve uygulama oyunu. </p><button class='lv' onclick='pt()'><span class='e'>"+RK[rank(total())][2]+"</span><span><b>"+RK[rank(total())][1]+"</b><span class='mut'>"+total()+" XP · puan tablomu ve rozetlerimi gör</span></span></button><div class='nick'><input id='nick' maxlength='16' placeholder='Takma adın (sıralama için)' value='"+esc(nick)+"' oninput='setNick(this.value)' aria-label='Takma ad'></div><button class='o' style='text-align:center' onclick='lb()'>🏆 Sınıf sıralamasını gör</button>";
+L.forEach(function(l,i){if(i==0)h+="<h2 class='gh'>📖 Sunum içeriği</h2>";if(i==NP)h+="<h2 class='gh'>💉 Ek modül: uygulama ve güvenlik</h2>";h+="<button class='lv"+(done[i]?" done":"")+"' onclick='start("+i+")'><span class='e'>"+ico(l.e)+"</span><span><b>"+l.t+"</b><span class='mut'>"+l.d+(done[i]?" · "+"★".repeat(done[i]):"")+"</span></span></button>"});
+h+="<h2 class='gh'>🎮 Eklenti oyunlar</h2><button class='lv' onclick='story()'><span class='e'>"+IC["🚑"]+"</span><span><b>Hemşire Elif’in Mahalle Macerası</b><span class='mut'>7 bölüm: karar ver, mahalleyi aşıyla koru"+(best.story?" · en iyi "+best.story+"/70":"")+"</span></span></button>";
+h+="<button class='lv' onclick='mt()'><span class='e'>"+IC["🔗"]+"</span><span><b>Kim hangi aşıyı olur?</b><span class='mut'>Resimli eşleştirme: kişiyi aşıyla birleştir"+(best.m3?" · en iyi "+best.m3+"/80":"")+"</span></span></button>";
+h+="<button class='lv' onclick='fast()'><span class='e'>"+IC["⚡"]+"</span><span><b>Şimşek Turu</b><span class='mut'>60 saniyede doğru mu, yanlış mı"+(best.fast?" · en iyi "+best.fast+"/100":"")+"</span></span></button>";
+h+="<button class='o' style='text-align:center;font-size:14px;margin-top:14px' onclick='tchAsk()'>🎓 Öğretmen paneli</button>";
+h+="<p class='note'>İçerik ‘Hemşirelikte Öğretim’ sunumuna ve sunumdaki Sağlık Bakanlığı 2026 takvim tablosuna dayanır. Eğitim amaçlıdır; uygulamadan önce güncel takvimi asi.saglik.gov.tr adresinden kontrol edin.</p>";
+A.innerHTML=h}
+function hdr(){var n=s.l.k=="ord"?s.l.s.length:s.l.q.length,p=s.l.k=="ord"?s.got.length:s.i;
+return "<div class='top'><span class='tt'><i class='ti'>"+ico(s.l.e)+"</i>"+s.l.t+"</span><span aria-label='Can'>"+"❤️".repeat(s.h)+"🤍".repeat(3-s.h)+"</span></div><div class='bar'><i style='width:"+(p/n*100)+"%'></i></div>"}
+function start(i){var l=L[i];s={i:0,li:i,x0:xp,l:l,h:3,lock:false,got:[],pool:l.k=="ord"?sh(l.s.map(function(_,j){return j})):null,q:l.k=="ord"?null:sh(l.q.map(function(_,j){return j}))};draw()}
+function draw(){
+if(s.l.k=="map")return drawMap();
+if(s.l.k=="ord")return drawOrd();
+var q=s.l.q[s.q[s.i]],h=hdr()+"<h2>"+q[0]+"</h2>";s.lock=false;
+if(s.l.k=="tf")h+="<div class='tf'><button class='o' onclick='ans(0)'>Doğru</button><button class='o' onclick='ans(1)'>Yanlış</button></div>";
+else q[1].forEach(function(o,j){h+="<button class='o' onclick='ans("+j+")'>"+o+"</button>"});
+h+="<div id='fb'></div>";A.innerHTML=h}
+function ans(j){
+if(s.lock)return;s.lock=true;var q=s.l.q[s.q[s.i]],a=s.l.k=="tf"?(q[1]?0:1):q[2],e=s.l.k=="tf"?q[2]:q[3],b=A.querySelectorAll(".o"),ok=j==a;
+b[a].classList.add("ok");if(!ok){b[j].classList.add("no");s.h--}else xp+=10;
+var last=s.i==s.l.q.length-1;
+document.getElementById("fb").innerHTML="<div class='ex'><b>"+(ok?"Doğru. ":"Yanlış. ")+"</b>"+e+"<br><span class='mut'>Kaynak: "+s.l.r+"</span></div><button class='go' onclick='nxt()'>"+(s.h==0||last?"Sonucu gör":"Devam")+"</button>"}
+function nxt(){s.i++;if(s.h==0||s.i>=s.l.q.length)return fin();draw()}
+function drawOrd(){
+var h=hdr()+"<h2>Doğru sırayla dokun</h2>";
+s.got.forEach(function(g,n){h+="<div class='sec'><span>"+(n+1)+"</span>"+s.l.s[g]+"</div>"});
+sh(s.pool.filter(function(p){return s.got.indexOf(p)<0})).forEach(function(p){h+="<button class='o' onclick='tap("+p+")'>"+s.l.s[p]+"</button>"});
+A.innerHTML=h}
+function tap(p){
+if(p==s.got.length){s.got.push(p);xp+=10;if(s.got.length==s.l.s.length)return fin();drawOrd()}
+else{s.h--;if(s.h==0)return fin();drawOrd();A.classList.remove("shake");void A.offsetWidth;A.classList.add("shake")}}
+function fin(){
+var win=s.h>0,st=win?s.h:0;if(win&&(!done[s.li]||done[s.li]<st))done[s.li]=st;
+if(win){var a=xp-s.x0;if(!best[s.li]||best[s.li]<a){best[s.li]=a;saveBest()}push()}
+A.innerHTML="<div class='big'>"+(win?MEDAL:"🔁")+"</div><h2 style='text-align:center'>"+(win?"Bölüm tamamlandı":"Tekrar dene")+"</h2><p style='text-align:center' class='mut'>"+(win?"★".repeat(st)+" · Toplam "+total()+" XP":"Canların bitti. Açıklamaları gözden geçirip yeniden başla.")+"</p><button class='go' onclick='start("+s.li+")'>Bu bölümü tekrar oyna</button><div style='height:10px'></div><button class='o' style='text-align:center' onclick='home()'>Bölümlere dön</button>"}
+
+var ST=[
+{t:"İlk gün",who:"Ayşe (anne)",bg:"#cfe9e4",c:"#e4572e",p:"🍼",s:"Ayşe Hanım üç günlük bebeğiyle ASM’ye geldi: ‘Hemşire hanım, bebeğime hangi aşılar yapılıyor? Aşı kartını ne yapacağım?’",o:[
+["Hepatit B’nin doğumda yapıldığını, kartın işlenmesini ve randevuları takip etmesini anlatırım.",10,"Harika! Hep-B 1. doz doğumda yapılır. Aşı kartının işlenmesini takip etmek ve randevuları aksatmamak gerekir."],
+["‘Aşılar 6. ayda başlıyor, o zaman gelin.’",0,"Hatalı. Takvimde Hep-B doğumda, BCG ve karma aşılar 2. ay sonunda başlar."],
+["Aşı kartından bahsetmeden sadece günü söylerim.",4,"Eksik. Kartın işlendiğini kontrol etmek, randevuların aksamaması için önemlidir."]]},
+{t:"İkinci ay",who:"Ayşe (anne)",bg:"#dbe7f5",c:"#7c5cbf",p:"💉",s:"Bebeğin 2. ay kontrolü. BCG, KPA ve karma aşı (DaBT-İPA-Hib-HepB) yapılacak. Anne endişeli: ‘Üçü birden bağışıklığına zarar vermez mi?’",o:[
+["Günlük hayatta karşılaştığı antijenlere göre bu sayı çok düşük; birlikte yapmak takvime uyumu da artırır derim.",10,"Doğru! Birlikte uygulama bağışıklık sistemine zarar vermez ve takvime uyumu artırır."],
+["‘Haklısınız, birini sonraya erteleyelim.’",0,"Gereksiz erteleme çocuğu hastalıklara karşı korumasız bırakır. Birlikte uygulama güvenlidir."],
+["‘Doktorlar böyle istiyor, merak etmeyin.’",4,"Endişesini dinlemedin. Kısa ve anlaşılır bir bilimsel açıklama güveni artırır."]]},
+{t:"Tereddüt",who:"Mehmet (baba)",bg:"#f6e3d4",c:"#2f6f9f",p:"💬",s:"Baba kaşlarını çatıyor: ‘Sosyal medyada aşıların kısırlık yaptığını okudum. Bebeğime yaptırmak istemiyorum.’",o:[
+["Önce dinlerim, endişesinin kaynağını sorarım; sonra bu iddiayı destekleyen bilimsel bulgu olmadığını anlatırım.",10,"Süper! Motivasyonel görüşme: aktif dinleme, endişenin kaynağını sorma ve empati. Aşıların kısırlık yaptığına dair bilimsel bulgu yoktur."],
+["‘Bu bir yalan, yaptırmak zorundasınız.’",0,"Eleştirmek ve zorlamak direnci artırır. Yargılamadan dinlemek daha etkilidir."],
+["Broşür verip konuyu kapatırım.",5,"Broşür faydalı ama kişiyle konuşmadan etkisi sınırlı kalır. Endişenin kaynağını sormak gerekir."]]},
+{t:"Gece telefonu",who:"Ayşe (telefonda)",bg:"#e6efe0",c:"#b5651d",p:"🌡️",s:"Gece 11’de arıyor: ‘Aşıdan sonra kolu şişti, kızardı, hafif ateşi var. Çok korktum!’",o:[
+["Sık görülen hafif bir etki olduğunu, genellikle 24–48 saatte düzeldiğini, soğuk uygulama yapabileceğini; ağırlaşır veya uzarsa başvurmasını söylerim.",10,"Doğru! Enjeksiyon yeri reaksiyonları genellikle 24–48 saatte, ateş gibi belirtiler 48–72 saatte düzelir. Soğuk uygulama rahatlatır. Ağır ya da uzayan belirtilerde sağlık kuruluşuna başvurulmalıdır."],
+["‘Bir daha aşı yaptırmayın.’",0,"Hatalı. Bu hafif etkiler beklenir; aşıyı bırakmak çocuğu hastalıklara karşı korumasız bırakır."],
+["‘Sabaha kadar bekleyin, bir şey olmaz.’",3,"Rahatlatmak iyi ama neleri beklemesi gerektiğini ve ne zaman başvuracağını da anlatmalıydın."]]},
+{t:"12. ay: canlı aşı",who:"Zeynep (anne)",bg:"#f4e8c8",c:"#2e8b57",p:"🧒",s:"Bebek 12 aylık: KKK ve suçiçeği zamanı. Anne ekliyor: ‘Çocuğum bir süredir bağışıklığı baskılayan bir ilaç kullanıyor.’",o:[
+["KKK ve suçiçeği canlı aşıdır; baskılanmış bağışıklıkta uygulanmaz. Yapmadan önce hekime danışırım.",10,"Doğru! Canlı aşılar (BCG, OPA, KKK, suçiçeği) bağışıklığı zayıflamış ya da baskılanmış kişilere uygulanmamalıdır."],
+["Takvimde yazıyor, hemen yaparım.",0,"Tehlikeli. Takvim tek başına yetmez; önce uygunluk değerlendirilmelidir."],
+["Aşıyı atlayıp aileye bir şey söylemem.",2,"Aşıyı ertelemek tek başına çözüm değil; aileyi bilgilendirip hekime yönlendirmelisin."]]},
+{t:"Okul semineri",who:"Okul müdürü",bg:"#e0e4f6",c:"#c2410c",p:"🏫",s:"Mahalle okulunda veli ve öğrencilere aşı semineri vereceksin. Salonda sosyal medyadan duyduğu iddialara inanan veliler var.",o:[
+["Sade dille anlatır, yanlış bilinenleri yargılamadan yanıtlar, e-Nabız ve SMS hatırlatmasını tanıtırım.",10,"Harika! Sade dil, yargılamayan mit kırma ve dijital hatırlatıcılar aşı farkındalığını artırır."],
+["Tıbbi terimlerle uzun bir sunum yaparım.",2,"Tıbbi terimler anlaşılırlığı düşürür; herkesin kavrayabileceği sade dil kullanılmalıdır."],
+["Broşür dağıtıp salondan ayrılırım.",5,"Broşür iyi ama interaktif seminer ve sorulara yanıt vermek daha etkilidir."]]},
+{t:"Hamile komşu",who:"Elif (gebe)",bg:"#f2dcec",c:"#8b3a62",p:"🤰",s:"Seminerden sonra hamile bir komşu soruyor: ‘Hamileyken hangi aşılar yapılır?’",o:[
+["Tdab, Td ve grip aşısı önerilir; KKK ve suçiçeği canlı aşı olduğu için gebelikte yapılmaz derim.",10,"Doğru! Gebelere Tdab, Td ve grip aşısı önerilir. Canlı aşılar gebelikte genellikle yapılmaz."],
+["‘KKK ve suçiçeği yaptırın.’",0,"Hatalı. Bunlar canlı aşılardır ve gebelikte genellikle yapılmaz."],
+["‘Doğuma kadar hiçbir aşı yaptırmayın.’",3,"Gebelikte önerilen aşılar anne ve bebeği korur; hepsini ertelemek doğru değildir."]]}
+];
+var st=null;
+function av(x,col,nurse){return "<g transform='translate("+x+" 20)'><path d='M6 104c0-28 10-46 24-46s24 18 24 46z' fill='"+col+"'/><circle cx='30' cy='30' r='18' fill='#f2c6a0'/>"+(nurse?"<path d='M12 24c0-16 36-16 36 0z' fill='#fff'/><path d='M30 9v9M25.5 13.5h9' stroke='#e4572e' stroke-width='3' stroke-linecap='round'/>":"<path d='M12 28c0-18 36-18 36 0c-6-8-30-8-36 0z' fill='#5b3a1e'/>")+"<circle cx='24' cy='32' r='2' fill='#333'/><circle cx='36' cy='32' r='2' fill='#333'/><path d='M25 39q5 4 10 0' stroke='#333' fill='none' stroke-width='2' stroke-linecap='round'/></g>"}
+function stage(c){return "<svg class='hero' viewBox='0 0 320 130' role='img' aria-label='Sahne'><rect width='320' height='130' rx='22' fill='"+c.bg+"'/><rect y='104' width='320' height='26' fill='#000' opacity='.08'/>"+av(36,"#0f766e",true)+av(224,c.c,false)+"<text x='160' y='84' font-size='46' text-anchor='middle'>"+c.p+"</text></svg>"}
+function story(){st={i:0,pts:0,log:[],lock:false};scene()}
+function scene(){var c=ST[st.i];st.lock=false;st.ord=sh(c.o.map(function(_,j){return j}));
+var h="<div class='top'><span class='tt'><i class='ti'>"+IC["🚑"]+"</i>Bölüm "+(st.i+1)+"/"+ST.length+"</span><span>⭐ "+st.pts+"</span></div><div class='bar'><i style='width:"+(st.i/ST.length*100)+"%'></i></div>"+stage(c)+"<h2>"+c.t+"</h2><div class='ex'><b>"+c.who+":</b> "+c.s+"</div>";
+st.ord.forEach(function(j){h+="<button class='o' data-j='"+j+"' onclick='pickS("+j+")'>"+c.o[j][0]+"</button>"});
+A.innerHTML=h+"<div id='fb'></div>"}
+function pickS(j){if(st.lock)return;st.lock=true;var c=ST[st.i],o=c.o[j],bi=0;c.o.forEach(function(x,k){if(x[1]>c.o[bi][1])bi=k});
+st.pts+=o[1];st.log.push(o[1]>=10);
+document.querySelectorAll('.o').forEach(function(b){var k=+b.dataset.j;if(k==bi)b.classList.add('ok');else if(k==j)b.classList.add('no')});
+var last=st.i==ST.length-1;
+document.getElementById('fb').innerHTML="<div class='ex'><b>"+(o[1]>=10?"Harika seçim! ":o[1]>=5?"Fena değil. ":"Dikkat! ")+"</b>"+o[2]+(j!=bi?"<br><b>En iyisi:</b> "+c.o[bi][2]:"")+"</div><button class='go' onclick='nextS()'>"+(last?"Macerayı bitir":"Sonraki bölüm")+"</button>"}
+function nextS(){st.i++;if(st.i>=ST.length)return fin2();scene()}
+function fin2(){var sc=st.pts,r=sc>=60?["🏅","Aşı Elçisi","Mahalle sana güveniyor."]:sc>=40?["⭐","Deneyimli hemşire","Çoğu kararında doğru yoldasın."]:["📘","Çırak hemşire","Konuları gözden geçirip yeniden dene."];
+if(!best.story||best.story<sc){best.story=sc;saveBest()}push();
+A.innerHTML="<div class='big'>"+r[0]+"</div><h2 style='text-align:center'>"+r[1]+"</h2><p style='text-align:center'>"+r[2]+"</p><p style='text-align:center' class='mut'>Macera puanı: "+sc+" / "+ST.length*10+" · Toplam: "+total()+" XP</p><button class='go' onclick='story()'>Macerayı yeniden oyna</button><div style='height:10px'></div><button class='o' style='text-align:center' onclick='home()'>Ana ekran</button>"}
+
+IC["⚡"]=sv("<path class='i1' d='M27 4L11 27h11l-3 17 19-26H27z'/>");
+var FQ=[
+["BCG canlı bir aşıdır.",true,"BCG, OPA, KKK ve suçiçeği canlı aşılardır."],
+["Hepatit B aşısı rekombinant DNA teknolojisiyle üretilir.",true,"Rekombinant aşıya örnek: Hepatit B."],
+["Difteri ve tetanos aşıları toksoid aşılardır.",true,"Toksinin zararlı yapısı giderilmiştir."],
+["Hepatit A aşısı canlı bir aşıdır.",false,"Hepatit A, öldürülmüş (tam hücre) aşıdır."],
+["KKK aşısı canlı aşıdır.",true,"KKK canlı, zayıflatılmış aşıdır."],
+["Canlı aşılar bağışıklığı baskılanmış kişilere önerilir.",false,"Bu kişilere canlı aşı uygulanmamalıdır."],
+["Takvimde BCG 2. ay sonunda yapılır.",true,"BCG: 2. ay sonu, tek doz."],
+["Hepatit B’nin ilk dozu doğumda yapılır.",true,"Hep-B 1. doz doğumdadır."],
+["OPA’nın ilk dozu 12. ayda yapılır.",false,"OPA 1. doz 6. ay, 2. doz 18. aydadır."],
+["Td rapel dozu 13 yaşında yapılır.",true,"13 yaş: Td rapel."],
+["Hepatit A aşısı 18. ve 24. aylarda yapılır.",true,"Hep-A: 18. ay I, 24. ay II."],
+["KKK’nin ek dozu 9. ayda yapılır.",true,"KKK: 9. ay ek doz, 12. ay I, 48. ay II."],
+["Suçiçeği aşısının 2. dozu 48. ayda yapılır.",true,"Suçiçeği: 12. ay I, 48. ay II."],
+["KPA aşısı 6. ayda başlar.",false,"KPA: 2. ay I, 4. ay II, 12. ay rapel."],
+["Karma aşı (DaBT-İPA-Hib-HepB) 2., 4., 6. ve 18. aylarda yapılır.",true,"Üç doz artı 18. ayda rapel."],
+["Aşılar kısırlık yapar.",false,"Bilimsel bulgu yoktur."],
+["Aynı anda birden fazla aşı bağışıklığa zarar verir.",false,"Antijen yükü günlük maruziyetten çok düşüktür."],
+["Aşılar toplumu da korur.",true,"Sürü bağışıklığı."],
+["Kızamıkta ensefalit riski, aşıdakinden çok daha yüksektir.",true,"Yaklaşık 1/1000’e karşı 1/1.000.000."],
+["Enjeksiyon yeri ağrısı genellikle 24–48 saatte düzelir.",true,"Soğuk uygulama rahatlatır."],
+["BCG sonrası 2–3 hafta içinde sivilce benzeri şişlik beklenir.",true,"Sık görülür ve iz bırakarak iyileşir."],
+["Gebelere Tdab ve grip aşısı önerilir.",true,"Td de önerilenler arasındadır."],
+["65 yaş ve üzerine pnömokok ve grip önerilir.",true,"Erişkin tablosunda yer alır."],
+["Pnömokok aşısı alt birimli aşıdır.",true,"Yalnızca belli antijenik kısımları içerir."],
+["Kuduz aşısı rutin çocukluk takvimindedir.",false,"Kuduz rutin takvimde yoktur."],
+["KKK sonrası döküntü genellikle 7–10. günlerde başlar.",true,"%2–5 oranında, yaklaşık 2 gün sürer."],
+["İnaktive polio aşısı canlı bir aşıdır.",false,"İnaktive polio öldürülmüş aşıdır."],
+["Aşı tereddüdünde eleştirmek, aktif dinlemekten daha etkilidir.",false,"Aktif dinleme ve empati önerilir."]
+];
+var fz=null;
+function fstop(){if(fz){clearInterval(fz.iv);fz=null}}
+function fast(){fstop();fz={sc:0,cb:0,ok:0,no:0,miss:[],q:sh(FQ.map(function(_,i){return i})),n:0,on:true,msg:"",end:Date.now()+60000};fz.iv=setInterval(ftick,250);fdraw()}
+function ftick(){if(!fz||!fz.on)return true;var r=Math.max(0,(fz.end-Date.now())/1000),t=document.getElementById("ftt"),b=document.getElementById("ftb");if(t)t.textContent="⏱ "+Math.ceil(r)+" sn";if(b)b.style.width=(Math.min(r,60)/60*100)+"%";if(r<=0){fend();return true}return false}
+function fdraw(){var q=FQ[fz.q[fz.n%fz.q.length]],m=1+Math.min(3,Math.floor(fz.cb/3));
+A.innerHTML="<div class='top'><span class='tt'><i class='ti'>"+IC["⚡"]+"</i>Şimşek Turu</span><span>⭐ "+fz.sc+"</span></div><div class='bar'><i id='ftb' style='width:100%'></i></div><div class='top'><span id='ftt'>⏱ 60 sn</span><span>Seri x"+m+"</span></div><div class='ex' style='font-size:19px;min-height:96px'>"+q[0]+"</div><div class='tf'><button class='o' onclick='fans(true)'>Doğru</button><button class='o' onclick='fans(false)'>Yanlış</button></div><div class='mut' style='min-height:48px;margin-top:6px'>"+(fz.msg||"60 saniyen var. Hızlı ol! Üst üste 3 doğru, çarpanı artırır.")+"</div><button class='o' style='text-align:center;margin-top:8px' onclick='fstop();home()'>Çık</button>";ftick()}
+function fans(v){if(!fz||!fz.on)return;var qi=fz.q[fz.n%fz.q.length],q=FQ[qi];fz.n++;
+if(v===q[1]){var m=1+Math.min(3,Math.floor(fz.cb/3));fz.cb++;fz.sc+=10*m;fz.ok++;fz.msg="<b>✓ +"+10*m+"</b> "+q[2]}
+else{fz.cb=0;fz.no++;fz.end-=3000;fz.miss.push(qi);fz.msg="<b>✗ −3 sn.</b> Doğrusu: "+(q[1]?"Doğru":"Yanlış")+". "+q[2]}
+if(ftick())return;fdraw()}
+function fend(){var f=fz;f.on=false;clearInterval(f.iv);fz=null;var pts=Math.min(100,Math.round(f.sc/4)),miss="";
+f.miss.filter(function(v,i,a){return a.indexOf(v)==i}).slice(0,5).forEach(function(i){miss+="<div class='ex'>"+FQ[i][0]+"<br><b>"+(FQ[i][1]?"Doğru":"Yanlış")+".</b> "+FQ[i][2]+"</div>"});
+if(!best.fast||best.fast<pts){best.fast=pts;saveBest()}push();
+A.innerHTML="<div class='big'>⚡</div><h2 style='text-align:center'>Süre doldu!</h2><p style='text-align:center' class='mut'>Skor: "+f.sc+" · Doğru: "+f.ok+" · Yanlış: "+f.no+" · Puan: "+pts+" · Toplam: "+total()+" XP</p>"+(miss?"<h2>Tekrar bak</h2>"+miss:"")+"<button class='go' onclick='fast()'>Tekrar oyna</button><div style='height:10px'></div><button class='o' style='text-align:center' onclick='home()'>Ana ekran</button>"}
+
+delete best.m1;delete best.m2;saveBest();
+IC["🔗"]=sv("<circle class='i1' cx='14' cy='24' r='8'/><circle class='i1' cx='34' cy='24' r='8'/><path class='i3' d='M20 24h8'/>");
+var MP=[
+{n:"Yeni doğan",v:"Hepatit B (ilk doz)",i:"Doğumda",hy:58,hr:15,bw:40,bh:26,c:"#f5b5c8",h:"#f5b5c8",vc:"#e4572e"},
+{n:"6 aylık",v:"OPA (1. doz)",i:"6. ay sonu",hy:50,hr:14,bw:30,bh:30,c:"#7cc6b8",h:"#5b3a1e",vc:"#f2b134"},
+{n:"9 aylık",v:"KKK ek doz",i:"9. ay",hy:46,hr:13,bw:30,bh:34,c:"#f2b134",h:"#5b3a1e",vc:"#7c5cbf"},
+{n:"18 aylık",v:"Hepatit A (1. doz)",i:"18. ay sonu",hy:42,hr:12,bw:28,bh:40,c:"#6aa0e0",h:"#2b1b0e",vc:"#2e8b57"},
+{n:"4 yaş",v:"DaBT-İPA rapel",i:"48. ay",hy:36,hr:11,bw:26,bh:48,c:"#e4572e",h:"#8b5a2b",vc:"#2f6f9f"},
+{n:"13 yaş",v:"Td rapel",i:"13 yaşta",hy:30,hr:11,bw:28,bh:56,c:"#0f766e",h:"#2b1b0e",vc:"#c2410c"},
+{n:"Gebe",v:"Tdab",i:"Gebelere Tdab, Td ve grip önerilir",hy:26,hr:11,bw:30,bh:62,c:"#c0508a",h:"#5b3a1e",belly:1,vc:"#8b3a62"},
+{n:"65 yaş üstü",v:"Pnömokok ve grip",i:"Erişkin tablosu",hy:28,hr:11,bw:28,bh:60,c:"#5b7076",h:"#d0d0d0",cane:1,vc:"#14a39a"}];
+function pp(o){var hy=o.hy,hr=o.hr,by=hy+hr-2,bw=o.bw,bh=o.bh;
+return "<svg viewBox='0 0 80 100' aria-hidden='true'><rect x='"+(40-bw/2)+"' y='"+by+"' width='"+bw+"' height='"+bh+"' rx='"+(bw/3)+"' fill='"+o.c+"'/>"+(o.belly?"<circle cx='47' cy='"+(by+24)+"' r='11' fill='"+o.c+"' stroke='#fff' stroke-opacity='.45' stroke-width='2'/>":"")+(o.cane?"<path d='M64 "+(by+12)+"v"+(bh-14)+"' stroke='#7a4a1e' stroke-width='3' stroke-linecap='round'/>":"")+"<circle cx='40' cy='"+hy+"' r='"+hr+"' fill='#f2c6a0'/><path d='M"+(40-hr)+" "+hy+"A"+hr+" "+hr+" 0 0 1 "+(40+hr)+" "+hy+"Z' fill='"+o.h+"'/><circle cx='"+(40-hr*.35)+"' cy='"+(hy+hr*.2)+"' r='1.7' fill='#333'/><circle cx='"+(40+hr*.35)+"' cy='"+(hy+hr*.2)+"' r='1.7' fill='#333'/><path d='M"+(40-hr*.3)+" "+(hy+hr*.55)+"q"+(hr*.3)+" "+(hr*.25)+" "+(hr*.6)+" 0' stroke='#333' fill='none' stroke-width='1.6' stroke-linecap='round'/></svg>"}
+function vial(c){return "<svg viewBox='0 0 48 64' aria-hidden='true'><rect x='15' y='3' width='18' height='11' rx='3' fill='"+c+"'/><rect class='i1' x='12' y='12' width='24' height='48' rx='8'/><rect x='12' y='30' width='24' height='16' fill='"+c+"' opacity='.9'/><path d='M24 33v10M19 38h10' stroke='#fff' stroke-width='3' stroke-linecap='round'/></svg>"}
+var mt_=null;
+function mt(){var P=MP.map(function(_,i){return i});mt_={p:sh(P),v:sh(P),done:{},sel:null,err:0,msg:""};mtDraw()}
+function mtDraw(){var g=mt_,n=Object.keys(g.done).length,h="<div class='top'><span class='tt'><i class='ti'>"+IC["🔗"]+"</i>Kim hangi aşıyı olur?</span><span>Hata: "+g.err+"</span></div><div class='bar'><i style='width:"+(n/MP.length*100)+"%'></i></div><div class='mut' style='margin-bottom:6px'>Önce üstten kişiyi, sonra alttan ona uygun aşıyı seç.</div><div class='mg' style='grid-template-columns:repeat(4,1fr)'>";
+g.p.forEach(function(i){var o=MP[i];h+="<button class='mc pv"+(g.done[i]?" ok":g.sel===i?" sel":"")+"' onclick='mtP("+i+")' aria-label='"+o.n+"'>"+pp(o)+"<span>"+o.n+"</span></button>"});
+h+="</div><div class='mut' style='margin:10px 0 6px'>Aşılar</div><div class='mg' style='grid-template-columns:repeat(4,1fr)'>";
+g.v.forEach(function(i){var o=MP[i];h+="<button class='mc pv vl"+(g.done[i]?" ok":"")+"' onclick='mtV("+i+")' aria-label='"+o.v+"'>"+vial(o.vc)+"<span>"+o.v+"</span></button>"});
+A.innerHTML=h+"</div><div class='ex'>"+(g.msg||"Hazırsan başla.")+"</div><button class='o' style='text-align:center' onclick='mt_=null;home()'>Geri</button>"}
+function mtP(i){var g=mt_;if(!g||g.done[i])return;g.sel=(g.sel===i?null:i);g.msg="";mtDraw()}
+function mtV(i){var g=mt_;if(!g||g.done[i])return;if(g.sel===null){g.msg="Önce üstten bir kişi seç.";mtDraw();return}
+if(g.sel===i){var o=MP[i];g.done[i]=1;g.sel=null;g.msg="<b>Doğru!</b> "+o.n+": "+o.v+" ("+o.i+")";if(Object.keys(g.done).length==MP.length)return mtEnd();mtDraw()}
+else{g.err++;g.sel=null;g.msg="Eşleşmedi. Bu aşı başka birine ait, tekrar dene.";mtDraw()}}
+function mtEnd(){var g=mt_,pts=Math.max(10,80-3*g.err),n=g.err<=3?3:g.err<=7?2:1;
+if(!best.m3||best.m3<pts){best.m3=pts;saveBest()}push();
+A.innerHTML="<div class='big'>"+MEDAL+"</div><h2 style='text-align:center'>Hepsini doğru eşleştirdin!</h2><p style='text-align:center' class='mut'>"+"★".repeat(n)+" · Hata: "+g.err+" · Puan: "+pts+" · Toplam: "+total()+" XP</p><button class='go' onclick='mt()'>Tekrar oyna</button><div style='height:10px'></div><button class='o' style='text-align:center' onclick='mt_=null;home()'>Ana ekran</button>"}
+
+var RK=[[0,"Çırak","🌱"],[100,"Stajyer hemşire","📘"],[250,"Aşı uzmanı","💉"],[450,"Aşı elçisi","🏅"],[650,"Aşı kahramanı","🏆"]];
+function rank(x){var r=0;RK.forEach(function(k,i){if(x>=k[0])r=i});return r}
+var GM=[["story","Hikâyeli macera",70],["fast","Şimşek Turu",100],["m3","Kim hangi aşıyı olur?",80]];
+function secs(){var a=[];L.forEach(function(l,i){a.push({k:i,n:l.t,max:(l.k=="ord"?l.s.length:l.q.length)*10})});GM.forEach(function(g){a.push({k:g[0],n:g[1],max:g[2]})});return a}
+var BG=[
+{e:"🎯",n:"İlk adım",d:"Bir bölümü tamamla",f:function(){return L.some(function(l,i){return best[i]>0})}},
+{e:"🧠",n:"Mit avcısı",d:"Yanlış bilinenlerde 40+ puan",f:function(){return best[6]>=40}},
+{e:"📅",n:"Takvim ustası",d:"Takvim 2026’da 50+ puan",f:function(){return best[3]>=50}},
+{e:"🧰",n:"Tür bilgini",d:"Aşı türlerinde 50+ puan",f:function(){return best[1]>=50}},
+{e:"🚑",n:"Mahalle hemşiresi",d:"Maceradan 60+ puan",f:function(){return best.story>=60}},
+{e:"⚡",n:"Şimşek",d:"Şimşek Turu’nda 50+ puan",f:function(){return best.fast>=50}},
+{e:"🔗",n:"Eşleştirme ustası",d:"Eşleştirmede 70+ puan",f:function(){return best.m3>=70}},
+{e:"🏆",n:"Hepsini bitirdim",d:"Tüm bölüm ve oyunları tamamla",f:function(){return secs().every(function(c){return best[c.k]>0})}}];
+function pt(){var x=total(),r=rank(x),nx=RK[r+1],h="<div class='top'><span>⭐ Puan tablom</span></div><div class='ex'><b>"+RK[r][2]+" "+RK[r][1]+"</b> · "+x+" XP"+(nx?"<div class='bar' style='margin:8px 0 2px'><i style='width:"+((x-RK[r][0])/(nx[0]-RK[r][0])*100)+"%'></i></div><span class='mut'>Sonraki rütbe: "+nx[1]+" ("+nx[0]+" XP)</span>":"<br><span class='mut'>En yüksek rütbedesin!</span>")+"</div><h2 class='gh'>Rozetler</h2>";
+BG.forEach(function(b){var ok=b.f();h+="<div class='sec' style='opacity:"+(ok?1:.5)+"'><span>"+(ok?b.e:"🔒")+"</span><b>"+b.n+"</b> <span class='mut' style='margin:0'>"+b.d+"</span></div>"});
+h+="<h2 class='gh'>Bölümler</h2>";
+secs().forEach(function(c){var v=best[c.k]||0;h+="<div style='margin-bottom:10px'><div style='display:flex;justify-content:space-between;font-size:14px'><span>"+esc(c.n)+"</span><b>"+v+"/"+c.max+"</b></div><div class='bar' style='margin:4px 0 0'><i style='width:"+(v/c.max*100)+"%'></i></div></div>"});
+A.innerHTML=h+"<button class='go' onclick='home()'>Geri</button>"}
+var TPIN="asi2026",TD=[];
+function tchAsk(msg){A.innerHTML="<div class='top'><span>🎓 Öğretmen paneli</span></div><p class='mut'>"+(msg||"Devam etmek için öğretmen şifresini gir.")+"</p><div class='nick'><input id='pin' type='password' placeholder='Şifre' aria-label='Şifre'></div><button class='go' onclick='tchGo()'>Giriş</button><div style='height:10px'></div><button class='o' style='text-align:center' onclick='home()'>Geri</button>"}
+function tchGo(){var v=document.getElementById("pin").value;if(v!==TPIN)return tchAsk("Şifre yanlış.");tchLoad()}
+function tchLoad(){var h="<div class='top'><span>🎓 Öğretmen paneli</span></div>";
+if(!DB){A.innerHTML=h+"<p class='mut'>Veritabanı bağlı değil.</p><button class='go' onclick='home()'>Geri</button>";return}
+A.innerHTML=h+"<p class='mut'>Yükleniyor…</p>";
+fetch(DB+"/scores.json").then(function(r){return r.json()}).then(function(o){TD=[];for(var k in o)TD.push(o[k]);TD.sort(function(x,y){return y.score-x.score});tchDraw()}).catch(function(){A.innerHTML=h+"<p class='mut'>Bağlanılamadı. İnternetini kontrol et.</p><button class='go' onclick='home()'>Geri</button>"})}
+function fdt(t){return t?new Date(t).toLocaleString("tr-TR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"-"}
+function tchDraw(){var S=secs(),n=TD.length,h="<div class='top'><span>🎓 Öğretmen paneli</span><span>"+n+" öğrenci</span></div>";
+if(!n){A.innerHTML=h+"<p class='mut'>Henüz kayıt yok.</p><button class='go' onclick='tchLoad()'>Yenile</button><div style='height:10px'></div><button class='o' style='text-align:center' onclick='home()'>Geri</button>";return}
+var avg=Math.round(TD.reduce(function(a,p){return a+Number(p.score)},0)/n);
+h+="<div class='ex'>Ortalama puan: <b>"+avg+" XP</b></div><h2 class='gh'>Bölüm tamamlama oranı</h2>";
+S.forEach(function(c){var d=TD.filter(function(p){return p.prog&&p.prog[c.k]>0}).length,pc=Math.round(d/n*100);h+="<div style='margin-bottom:8px'><div style='display:flex;justify-content:space-between;font-size:14px'><span>"+esc(c.n)+"</span><b>%"+pc+"</b></div><div class='bar' style='margin:4px 0 0'><i style='width:"+pc+"%'></i></div></div>"});
+h+="<h2 class='gh'>Öğrenciler</h2>";
+TD.forEach(function(p,i){var sq="";S.forEach(function(c){var ok=p.prog&&p.prog[c.k]>0;sq+="<i class='sq"+(ok?" ok":"")+"' title='"+esc(c.n)+"'></i>"});
+h+="<div class='sec'><div><span>"+(i+1)+"</span><b>"+esc(p.name)+"</b> · "+RK[rank(Number(p.score))][2]+" "+RK[rank(Number(p.score))][1]+"<b style='float:right'>"+Number(p.score)+" XP</b></div><div style='margin-top:6px'>"+(p.prog?sq:"<span class='mut'>İlerleme verisi yok</span>")+"</div><div class='mut' style='font-size:12px;margin-top:4px'>Son etkinlik: "+fdt(p.t)+"</div></div>"});
+A.innerHTML=h+"<textarea id='csv' readonly style='display:none;width:100%;height:120px;margin-bottom:8px'></textarea><div id='cm' class='mut'></div><button class='go' onclick='tchCsv()'>Tablo olarak kopyala (CSV)</button><div style='height:10px'></div><button class='o' style='text-align:center' onclick='tchLoad()'>Yenile</button><button class='o' style='text-align:center' onclick='home()'>Geri</button>"}
+function tchCsv(){var S=secs(),q=function(x){return "\""+String(x).replace(/"/g,"\"\"")+"\""};
+var rows=[["Ad","Toplam XP","Rütbe"].concat(S.map(function(c){return c.n})).map(q).join(",")];
+TD.forEach(function(p){rows.push([p.name,p.score,RK[rank(Number(p.score))][1]].concat(S.map(function(c){return p.prog&&p.prog[c.k]?p.prog[c.k]:0})).map(q).join(","))});
+var t=rows.join("\n"),ta=document.getElementById("csv"),cm=document.getElementById("cm");
+ta.value=t;try{navigator.clipboard.writeText(t).then(function(){cm.textContent="Kopyalandı. Excel veya Google Sheets’e yapıştırabilirsin."},function(){ta.style.display="block";ta.select();cm.textContent="Metni seçip kopyala."})}catch(e){ta.style.display="block";ta.select();cm.textContent="Metni seçip kopyala."}}
+
+home();
+</script>
+</body>
+</html>
